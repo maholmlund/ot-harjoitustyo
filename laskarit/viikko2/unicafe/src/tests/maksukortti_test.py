@@ -24,3 +24,7 @@ class TestMaksukortti(unittest.TestCase):
     def test_raha_ei_vahene_jos_otetaan_liikaa(self):
         self.assertTrue(not self.maksukortti.ota_rahaa(1200))
         self.assertEqual(self.maksukortti.saldo_euroina(), 10.0)
+    
+    def test_merkkijonoesitys_on_oikein(self):
+        self.assertEqual(str(self.maksukortti), "Kortilla on rahaa 10.00 euroa")
+
