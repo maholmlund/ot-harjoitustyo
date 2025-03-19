@@ -3,3 +3,4 @@
 **Idea**: _Ohjelma joka mahdollistaa oman rahankäytön tarkkailun_
 <br>
 [Laskarit](laskarit)
+[Vaatimusmäärittely](dokumentaatio/vaatimusmaarittely.md)
