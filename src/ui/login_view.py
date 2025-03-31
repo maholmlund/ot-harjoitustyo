@@ -14,15 +14,15 @@ class LoginView:
     def _initialize(self):
         self._frame = ttk.Frame(self.root)
 
-        login_label = ttk.Label(self.root, text="Log in")
-        username_label = ttk.Label(self.root, text="Username:")
-        passwd_label = ttk.Label(self.root, text="Password:")
-        login_button = ttk.Button(self.root, text="Login", command=self._handle_login_submit)
-        create_user_button = ttk.Button(self.root, text="Create user", command=self._handle_user_creation)
-        username_field = ttk.Entry(self.root)
-        passwd_field = ttk.Entry(self.root, show="*")
-        self.error_msg = StringVar(self.root)
-        error_label = ttk.Label(self.root, textvariable=self.error_msg, foreground="red")
+        login_label = ttk.Label(self._frame, text="Log in")
+        username_label = ttk.Label(self._frame, text="Username:")
+        passwd_label = ttk.Label(self._frame, text="Password:")
+        login_button = ttk.Button(self._frame, text="Login", command=self._handle_login_submit)
+        create_user_button = ttk.Button(self._frame, text="Create user", command=self._handle_user_creation)
+        username_field = ttk.Entry(self._frame)
+        passwd_field = ttk.Entry(self._frame, show="*")
+        self.error_msg = StringVar(self._frame)
+        error_label = ttk.Label(self._frame, textvariable=self.error_msg, foreground="red")
 
         self.username = username_field
         self.passwd = passwd_field
@@ -36,6 +36,8 @@ class LoginView:
         login_button.grid(row=3, column=0, padx=6, pady=4)
         create_user_button.grid(row=3, column=1, padx=6, pady=4)
         error_label.grid(row=4, column=0, columnspan=2)
+
+        self._frame.pack()
     
     def _handle_login_submit(self):
         username = self.username.get()
@@ -43,8 +45,7 @@ class LoginView:
         if not expensetracker.login(username, passwd):
             self.error_msg.set("Invalid username or password")
         else:
-            self.root.destroy()
-            self.root = None
+            self._frame.destroy()
             self.handle_login(self.root)
 
     def _handle_user_creation(self):
