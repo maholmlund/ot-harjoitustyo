@@ -1,3 +1,4 @@
+from datetime import datetime
 from database import Db
 
 class Expensetracker:
@@ -13,5 +14,15 @@ class Expensetracker:
     
     def create_user(self, username, passwd):
         return Db().create_user(username, passwd)
+    
+    def get_expenses(self):
+        return Db().get_expenses(self.user.user_id)
+    
+    def create_expense(self, amount, desc):
+        amount = round(amount, 2)
+        amount_int = amount // 1
+        amount_dec = int((amount % 1) * 100)
+        date = datetime.now()
+        Db().create_expense(self.user.user_id, amount_int, amount_dec, desc, date)
 
 expensetracker = Expensetracker()
