@@ -1,5 +1,8 @@
 from tkinter import Tk
 from ui.login_view import LoginView
+from expensetracker import Expensetracker
+
+expensetracker = Expensetracker()
 
 class UI:
     def __init__(self):
