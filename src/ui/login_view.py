@@ -1,12 +1,14 @@
 from tkinter import ttk, constants, StringVar
 from expensetracker import expensetracker
+from ui.main_view import MainView
 
 class LoginView:
-    def __init__(self, root):
+    def __init__(self, root, handle_login):
         self.root = root
         self.username = None
         self.passwd = None
         self.error_msg = None
+        self.handle_login = handle_login
         self._initialize()
     
     def _initialize(self):
@@ -41,8 +43,9 @@ class LoginView:
         if not expensetracker.login(username, passwd):
             self.error_msg.set("Invalid username or password")
         else:
-            self.error_msg.set("")
-        self.error_label.grid()
+            self.root.destroy()
+            self.root = None
+            self.handle_login(self.root)
 
     def _handle_user_creation(self):
         username = self.username.get()
