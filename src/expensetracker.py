@@ -10,5 +10,8 @@ class Expensetracker:
             self.user = user
             return True
         return False
+    
+    def create_user(self, username, passwd):
+        return Db().create_user(username, passwd)
 
 expensetracker = Expensetracker()
