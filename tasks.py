@@ -15,3 +15,7 @@ def coverage_report(ctx):
     ctx.run("coverage report -m", pty=True)
     ctx.run("coverage html", pty=True)
     ctx.run("echo html report generated, please open htmlcov/index.html in your browser")
+
+@task
+def create_database(ctx):
+    ctx.run("cat src/schema.sql | sqlite3 database.db")
