@@ -38,3 +38,10 @@ class Db:
         category = int(self.con.execute(category_query, [category]).fetchone()[0])
         self.con.execute(query, [user_id, amount_int, amount_dec, desc, category, str(time)])
         self.con.commit()
+
+    def delete_all(self):
+        user_query = "DELETE FROM Users"
+        self.con.execute(user_query)
+        expense_query = "DELETE FROM Expenses"
+        self.con.execute(expense_query)
+        self.con.commit()
