@@ -1,5 +1,6 @@
 from invoke import task
 import os
+import sqlite3
 
 @task
 def start(ctx):
@@ -19,3 +20,11 @@ def coverage_report(ctx):
 @task
 def create_database(ctx):
     ctx.run("cat src/schema.sql | sqlite3 database.db")
+    con = sqlite3.connect("database.db")
+    for c in ["ruoka",
+              "liikenne",
+              "liikunta",
+              "kulttuuri",
+              "sijoitukset"]:
+        con.execute("INSERT INTO Categories (name) VALUES (?)", [c])
+    con.commit()
