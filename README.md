@@ -2,6 +2,13 @@
 
 Sovellus mahdollistaa oman talouden tarkkailun pitämällä kirjaa omista menoista. Sovelluksessa on mahdollista luoda useita käyttäjiä ja jokainen käyttäjä näkee vain omat menonsa. Dokumentaatio löytyy kansiosta [dokumentaatio](dokumentaatio).
 
+## Dokumentaatio
+
+- [arkkitehtuuri](dokumentaatio/arkkitehtuuri.md)
+- [vaatimusmäärittely](dokumentaatio/vaatimusmaarittely.md)
+- [työaikakirjanpito](dokumentaatio/tuntikirjanpito.md)
+- [changelog](dokumentaatio/changelog.md)
+
 ## Käyttö
 
 Sovelluksen käyttö vaatii Pythonin version 3.10 tai uudemman sekä Poetryn. Sovelluksen asennus:
