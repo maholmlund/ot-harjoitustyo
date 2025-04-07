@@ -39,6 +39,6 @@ class MainView:
     def _create_expense(self):
         sum_value = self.sum_var.get()
         desc = self.desc_var.get()
-        expensetracker.create_expense(float(sum_value), desc)
+        expensetracker.create_expense(sum_value, desc)
         self._frame.destroy()
         self._initialize()
