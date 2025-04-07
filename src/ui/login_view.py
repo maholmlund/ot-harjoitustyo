@@ -46,7 +46,7 @@ class LoginView:
             self.error_msg.set("Invalid username or password")
         else:
             self._frame.destroy()
-            self.handle_login(self.root)
+            self.handle_login(self.root, LoginView)
 
     def _handle_user_creation(self):
         username = self.username.get()

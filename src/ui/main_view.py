@@ -2,14 +2,15 @@ from tkinter import ttk, StringVar
 from expensetracker import expensetracker, CATEGORIES
 
 class MainView:
-    def __init__(self, root):
+    def __init__(self, root, handle_logout):
         self.root = root
+        self.handle_logout = handle_logout
         self.error_msg = None
         self._initialize()
     
     def _initialize(self):
         self._frame = ttk.Frame(self.root)
-        logout_button = ttk.Button(self._frame, text="Log out")
+        logout_button = ttk.Button(self._frame, text="Log out", command=self._logout)
         logout_button.grid(row=0, column=5, padx=6, pady=4)
 
         sum_label = ttk.Label(self._frame, text="Sum:")
@@ -58,3 +59,8 @@ class MainView:
             self.error_msg = "invalid number format"
         self._frame.destroy()
         self._initialize()
+
+    def _logout(self):
+        expensetracker.logout()
+        self._frame.destroy()
+        self.handle_logout(self.root, MainView)

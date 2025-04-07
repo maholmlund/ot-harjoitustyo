@@ -19,6 +19,9 @@ class Expensetracker:
             return True
         return False
     
+    def logout(self):
+        self.user = None
+
     def create_user(self, username, passwd):
         return self.db.create_user(username, passwd)
     
