@@ -28,3 +28,7 @@ def create_database(ctx):
               "sijoitukset"]:
         con.execute("INSERT INTO Categories (name) VALUES (?)", [c])
     con.commit()
+
+@task
+def lint(ctx):
+    ctx.run("pylint src", pty=True)
