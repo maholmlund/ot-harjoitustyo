@@ -41,3 +41,11 @@ Testien kattavuusraportti puolestaan voidaan muodostaa komennolla
 ```
 $ poetry run invoke coverage-report
 ```
+
+## Lint
+
+Pylint voidaan suorittaa koodille komennolla
+
+```
+$ poetry run invoke lint
+```
