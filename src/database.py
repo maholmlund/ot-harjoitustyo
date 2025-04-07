@@ -25,9 +25,11 @@ class Db:
         return True
 
     def get_expenses(self, user_id):
-        query = "SELECT * FROM Expenses WHERE user_id = ?"
+        query = """SELECT E.amount_int, E.amount_decimal, E.date, E.desc, C.name, E.id
+                   FROM Expenses E, Categories C
+                   WHERE E.user_id = ? AND C.id = E.category"""
         results = self.con.execute(query, [user_id]).fetchall()
-        expenses = [Expense(x[2], x[3], x[5], x[4], x[0]) for x in results]
+        expenses = [Expense(x[0], x[1], x[2], x[3], x[4], x[5]) for x in results]
         return expenses
     
     def create_expense(self, user_id, amount_int, amount_dec, desc, category, time):
