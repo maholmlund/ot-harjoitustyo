@@ -40,7 +40,7 @@ class MainView:
 
         expenses = expensetracker.get_expenses()
         for (i, expense) in enumerate(expenses):
-            amount = f"{expense.amount_int}.{"0" if expense.amount_dec < 10 else ""}{expense.amount_dec}€"
+            amount = f"{expense.amount_int}.{'0' if expense.amount_dec < 10 else ''}{expense.amount_dec}€"
             amount_label = ttk.Label(self._frame, text=amount)
             amount_label.grid(row=i, column=0, padx=6, pady=4)
             desc_label = ttk.Label(self._frame, text=expense.desc)
