@@ -18,16 +18,16 @@ class Expensetracker:
             self.user = user
             return True
         return False
-    
+
     def logout(self):
         self.user = None
 
     def create_user(self, username, passwd):
         return self.db.create_user(username, passwd)
-    
+
     def get_expenses(self):
         return self.db.get_expenses(self.user.user_id)
-    
+
     def create_expense(self, amount, desc, category):
         try:
             amount = format(float(amount), ".2f")
