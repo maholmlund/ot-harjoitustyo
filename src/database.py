@@ -30,7 +30,9 @@ class Db:
         expenses = [Expense(x[2], x[3], x[5], x[4], x[0]) for x in results]
         return expenses
     
-    def create_expense(self, user_id, amount_int, amount_dec, desc, time):
-        query = "INSERT INTO Expenses (user_id, amount_int, amount_decimal, desc, date) VALUES (?, ?, ?, ?, ?)"
-        self.con.execute(query, [user_id, amount_int, amount_dec, desc, str(time)])
+    def create_expense(self, user_id, amount_int, amount_dec, desc, category, time):
+        query = "INSERT INTO Expenses (user_id, amount_int, amount_decimal, desc, category, date) VALUES (?, ?, ?, ?, ?, ?)"
+        category_query = "SELECT id FROM Categories WHERE name = ?"
+        category = int(self.con.execute(category_query, [category]).fetchone()[0])
+        self.con.execute(query, [user_id, amount_int, amount_dec, desc, category, str(time)])
         self.con.commit()

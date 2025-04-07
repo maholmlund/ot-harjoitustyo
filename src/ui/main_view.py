@@ -1,5 +1,5 @@
 from tkinter import ttk, StringVar
-from expensetracker import expensetracker
+from expensetracker import expensetracker, CATEGORIES
 
 class MainView:
     def __init__(self, root):
@@ -26,12 +26,16 @@ class MainView:
         desc_field = ttk.Entry(self._frame, textvariable=self.desc_var)
         desc_field.grid(row=2, column=3, padx=6, pady=4)
 
+        self.category_var = StringVar(self._frame)
+        category_field = ttk.OptionMenu(self._frame, self.category_var, *CATEGORIES)
+        category_field.grid(row=3, column=3, padx=6, pady=4)
+
         create_button = ttk.Button(self._frame, text="Create", command=self._create_expense)
-        create_button.grid(row=3, column=2, columnspan=2, padx=6, pady=4)
+        create_button.grid(row=4, column=2, columnspan=2, padx=6, pady=4)
 
         if self.error_msg:
             error_msg = ttk.Label(self._frame, text=self.error_msg, foreground="red")
-            error_msg.grid(row=4, column=2, columnspan=2, padx=6, pady=4)
+            error_msg.grid(row=5, column=2, columnspan=2, padx=6, pady=4)
 
         expenses = expensetracker.get_expenses()
         for (i, expense) in enumerate(expenses):
@@ -45,7 +49,8 @@ class MainView:
         self.error_msg = None
         sum_value = self.sum_var.get()
         desc = self.desc_var.get()
-        if not expensetracker.create_expense(sum_value, desc):
+        category = self.category_var.get()
+        if not expensetracker.create_expense(sum_value, desc, category):
             self.error_msg = "invalid number format"
         self._frame.destroy()
         self._initialize()

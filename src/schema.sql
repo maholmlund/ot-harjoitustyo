@@ -10,5 +10,11 @@ CREATE TABLE Expenses (
         amount_int INTEGER,
         amount_decimal INTEGER,
         desc TEXT,
+        category INTEGER REFERENCES Categories,
         date DATETIME
+);
+
+CREATE TABLE Categories (
+        id INTEGER PRIMARY KEY,
+        name TEXT
 );
