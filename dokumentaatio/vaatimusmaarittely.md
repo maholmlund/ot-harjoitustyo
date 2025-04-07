@@ -14,18 +14,18 @@ Sovelluksessa on yhtä käyttäjätyyppiä, ns. normaalikäyttäjä.
 
 ### Ennen kirjautumista
 
-- Käyttäjä voi luoda uuden tunnuksen
+- Käyttäjä voi luoda uuden tunnuksen (tehty)
   - Tunnuksen täytyy olla vähintään 4 merkkiä
   - Salasanan täytyy olla vähintään 4 merkkiä
-- Käyttäjä voi kirjautua sovellukseen syöttämällä käyttäjänimen ja salasana
+- Käyttäjä voi kirjautua sovellukseen syöttämällä käyttäjänimen ja salasana (tehty)
 
 ### Kirjautumisen jälkeen
 
-- Käyttäjä voi lisätä uuden menon
-  - Menolle voi määritellä summan
-  - Menolle voi valita kategorian valmiista kategorioista
+- Käyttäjä voi lisätä uuden menon (tehty)
+  - Menolle voi määritellä summan (tehty)
+  - Menolle voi valita kategorian valmiista kategorioista (tehty)
   - Menolle voi asettaa päivämäärän
-- Käyttäjä näkee omat aiemmin kirjatut menonsa
+- Käyttäjä näkee omat aiemmin kirjatut menonsa (tehty)
 - Käyttäjä näkee statistiikkaa omista menoista, mm.
   - Kategorian perusteella
   - Kuukauden menojen keskiarvo
