@@ -20,10 +20,14 @@ class Expensetracker:
         return self.db.get_expenses(self.user.user_id)
     
     def create_expense(self, amount, desc):
-        amount = format(float(amount), ".2f")
+        try:
+            amount = format(float(amount), ".2f")
+        except ValueError:
+            return False
         amount_int = int(amount.split(".")[0])
         amount_dec = int(amount.split(".")[1])
         date = datetime.now()
         self.db.create_expense(self.user.user_id, amount_int, amount_dec, desc, date)
+        return True
 
 expensetracker = Expensetracker(Db())

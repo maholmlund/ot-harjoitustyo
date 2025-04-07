@@ -4,6 +4,7 @@ from expensetracker import expensetracker
 class MainView:
     def __init__(self, root):
         self.root = root
+        self.error_msg = None
         self._initialize()
     
     def _initialize(self):
@@ -28,6 +29,10 @@ class MainView:
         create_button = ttk.Button(self._frame, text="Create", command=self._create_expense)
         create_button.grid(row=3, column=2, columnspan=2, padx=6, pady=4)
 
+        if self.error_msg:
+            error_msg = ttk.Label(self._frame, text=self.error_msg, foreground="red")
+            error_msg.grid(row=4, column=2, columnspan=2, padx=6, pady=4)
+
         expenses = expensetracker.get_expenses()
         for (i, expense) in enumerate(expenses):
             text = f"{expense.amount_int}.{"0" if expense.amount_dec < 10 else ""}{expense.amount_dec}€ {expense.desc}"
@@ -37,8 +42,10 @@ class MainView:
         self._frame.pack()
         
     def _create_expense(self):
+        self.error_msg = None
         sum_value = self.sum_var.get()
         desc = self.desc_var.get()
-        expensetracker.create_expense(sum_value, desc)
+        if not expensetracker.create_expense(sum_value, desc):
+            self.error_msg = "invalid number format"
         self._frame.destroy()
         self._initialize()
