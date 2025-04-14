@@ -14,39 +14,39 @@ class MainView:
         self._frame = ttk.Frame(self.root)
         logout_button = ttk.Button(
             self._frame, text="Log out", command=self._logout)
-        logout_button.grid(row=0, column=5, padx=6, pady=4)
+        logout_button.grid(row=0, column=6, padx=6, pady=4)
 
         sum_label = ttk.Label(self._frame, text="Sum:")
-        sum_label.grid(row=1, column=3, padx=6, pady=4)
+        sum_label.grid(row=1, column=4, padx=6, pady=4)
 
         desc_label = ttk.Label(self._frame, text="Description")
-        desc_label.grid(row=2, column=3, padx=6, pady=4)
+        desc_label.grid(row=2, column=4, padx=6, pady=4)
 
         self.sum_var = StringVar(self._frame)
         sum_field = ttk.Entry(self._frame, textvariable=self.sum_var)
-        sum_field.grid(row=1, column=5, padx=6, pady=4)
+        sum_field.grid(row=1, column=6, padx=6, pady=4)
 
         self.desc_var = StringVar(self._frame)
         desc_field = ttk.Entry(self._frame, textvariable=self.desc_var)
-        desc_field.grid(row=2, column=5, padx=6, pady=4)
+        desc_field.grid(row=2, column=6, padx=6, pady=4)
 
         self.category_var = StringVar(self._frame)
         category_field = ttk.OptionMenu(
             self._frame, self.category_var, *CATEGORIES)
-        category_field.grid(row=3, column=5, padx=6, pady=4)
+        category_field.grid(row=3, column=6, padx=6, pady=4)
 
         self.date_field = DateEntry(self._frame,
                                     date_pattern="yyyy-mm-dd")
-        self.date_field.grid(row=4, column=5, padx=6, pady=4)
+        self.date_field.grid(row=4, column=6, padx=6, pady=4)
 
         create_button = ttk.Button(
             self._frame, text="Create", command=self._create_expense)
-        create_button.grid(row=5, column=4, columnspan=2, padx=6, pady=4)
+        create_button.grid(row=5, column=5, columnspan=2, padx=6, pady=4)
 
         if self.error_msg:
             error_msg = ttk.Label(
                 self._frame, text=self.error_msg, foreground="red")
-            error_msg.grid(row=6, column=4, columnspan=2, padx=6, pady=4)
+            error_msg.grid(row=6, column=5, columnspan=2, padx=6, pady=4)
 
         expenses = expensetracker.get_expenses()
         for (i, expense) in enumerate(expenses):
@@ -57,6 +57,8 @@ class MainView:
             desc_label.grid(row=i, column=1, padx=6, pady=4)
             category_label = ttk.Label(self._frame, text=expense.category)
             category_label.grid(row=i, column=2, padx=6, pady=4)
+            date_label = ttk.Label(self._frame, text=expense.date)
+            date_label.grid(row=i, column=3, padx=6, pady=4)
 
         self._frame.pack()
 
