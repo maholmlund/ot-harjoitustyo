@@ -13,3 +13,13 @@
 - Laajennettu testausta
 - Pylint otettu käyttöön
 - Lisätty arkkitehtuuridokumentaatio
+
+## Viikko 5
+
+- Käyttäjä voi valita menolleen päivämäärän
+- Käyttäjä näkee kuukauden menojen summan erillisessä ikkunassa
+- Tunnusta luodessa tarkastetaan tunnuksen ja salasanan riittävä pituus
+- Laajennettu testausta
+- Lisätty kaksi sekvenssikaaviota
+- Päivitetty TkInterin teema
+- Muutama bugikorjaus
