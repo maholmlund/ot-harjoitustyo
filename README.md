@@ -49,3 +49,6 @@ Pylint voidaan suorittaa koodille komennolla
 ```
 $ poetry run invoke lint
 ```
+
+## Releaset
+[Viikko 5](https://github.com/maholmlund/ot-harjoitustyo/releases/tag/viikko5)
