@@ -49,8 +49,12 @@ class Expensetracker:
         return self.db.get_month_expenses(year, month)
 
     def get_month_expenses_total(self, year, month):
-        expenses = self.db.get_month_expenses(year, month)
-        return sum(e.amount_int + e.amount_dec for e in expenses)
+        expenses = self.get_month_expenses(year, month)
+        sum_int = sum(e.amount_int for e in expenses)
+        sum_dec = sum(e.amount_dec for e in expenses)
+        sum_int += sum_dec // 100
+        result = sum_int + (sum_dec / 100)
+        return result
 
 
 expensetracker = Expensetracker(Db())
