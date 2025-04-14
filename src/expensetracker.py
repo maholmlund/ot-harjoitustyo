@@ -7,6 +7,7 @@ CATEGORIES = ["ruoka",
               "kulttuuri",
               "sijoitukset"]
 
+
 class Expensetracker:
     def __init__(self, db):
         self.user = None
@@ -23,7 +24,11 @@ class Expensetracker:
         self.user = None
 
     def create_user(self, username, passwd):
-        return self.db.create_user(username, passwd)
+        if len(username) < 4 or len(passwd) < 4:
+            return "username or password too short"
+        if not self.db.create_user(username, passwd):
+            return "username already in use"
+        return True
 
     def get_expenses(self):
         return self.db.get_expenses(self.user.user_id)
@@ -36,7 +41,9 @@ class Expensetracker:
         amount_int = int(amount.split(".")[0])
         amount_dec = int(amount.split(".")[1])
         date = datetime.now()
-        self.db.create_expense(self.user.user_id, amount_int, amount_dec, desc, category, date)
+        self.db.create_expense(self.user.user_id, amount_int,
+                               amount_dec, desc, category, date)
         return True
+
 
 expensetracker = Expensetracker(Db())

@@ -2,6 +2,7 @@ from tkinter import ttk, constants, StringVar
 from expensetracker import expensetracker
 from ui.main_view import MainView
 
+
 class LoginView:
     def __init__(self, root, handle_login):
         self.root = root
@@ -10,19 +11,22 @@ class LoginView:
         self.error_msg = None
         self.handle_login = handle_login
         self._initialize()
-    
+
     def _initialize(self):
         self._frame = ttk.Frame(self.root)
 
         login_label = ttk.Label(self._frame, text="Log in")
         username_label = ttk.Label(self._frame, text="Username:")
         passwd_label = ttk.Label(self._frame, text="Password:")
-        login_button = ttk.Button(self._frame, text="Login", command=self._handle_login_submit)
-        create_user_button = ttk.Button(self._frame, text="Create user", command=self._handle_user_creation)
+        login_button = ttk.Button(
+            self._frame, text="Login", command=self._handle_login_submit)
+        create_user_button = ttk.Button(
+            self._frame, text="Create user", command=self._handle_user_creation)
         username_field = ttk.Entry(self._frame)
         passwd_field = ttk.Entry(self._frame, show="*")
         self.error_msg = StringVar(self._frame)
-        error_label = ttk.Label(self._frame, textvariable=self.error_msg, foreground="red")
+        error_label = ttk.Label(
+            self._frame, textvariable=self.error_msg, foreground="red")
 
         self.username = username_field
         self.passwd = passwd_field
@@ -38,7 +42,7 @@ class LoginView:
         error_label.grid(row=4, column=0, columnspan=2)
 
         self._frame.pack()
-    
+
     def _handle_login_submit(self):
         username = self.username.get()
         passwd = self.passwd.get()
@@ -51,8 +55,9 @@ class LoginView:
     def _handle_user_creation(self):
         username = self.username.get()
         passwd = self.passwd.get()
-        if not expensetracker.create_user(username, passwd):
-            self.error_msg.set("Username already in use")
+        result = expensetracker.create_user(username, passwd)
+        if type(result) is str:
+            self.error_msg.set(result)
         else:
             self.error_msg.set("")
         self.error_label.grid()
