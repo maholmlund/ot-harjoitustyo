@@ -38,6 +38,8 @@ class Expensetracker:
             amount = format(float(amount), ".2f")
         except ValueError:
             return False
+        if float(amount) < 0:
+            return False
         amount_int = int(amount.split(".")[0])
         amount_dec = int(amount.split(".")[1])
         date = datetime.now()
