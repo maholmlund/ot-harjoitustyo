@@ -9,7 +9,9 @@ class StatsView:
         self.selected_month = None
         self.selected_year = None
         self.expenses = []
+        self.sum_total = 0
         self._initialize()
+        self._reload_expenses()
 
     def _initialize(self):
         self._frame = ttk.Frame(self.root)
@@ -34,6 +36,10 @@ class StatsView:
             self._frame, text="Get expenses", command=self._reload_expenses)
         get_expenses_button.grid(row=2, column=5, padx=6, pady=4)
 
+        total_label = ttk.Label(
+            self._frame, text=f"Total this month: {self.sum_total}€")
+        total_label.grid(row=3, column=5, padx=6, pady=4)
+
         for (i, expense) in enumerate(self.expenses):
             amount = f"{expense.amount_int}.{'0' if expense.amount_dec < 10 else ''}{expense.amount_dec}€"
             amount_label = ttk.Label(self._frame, text=amount)
@@ -57,6 +63,8 @@ class StatsView:
         if int(self.month) < 10:
             self.month = "0" + self.month
         self.expenses = expensetracker.get_month_expenses(
+            self.year, self.month)
+        self.sum_total = expensetracker.get_month_expenses_total(
             self.year, self.month)
         self._frame.destroy()
         self._initialize()
