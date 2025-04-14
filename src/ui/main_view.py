@@ -1,6 +1,7 @@
-from tkinter import ttk, StringVar
+from tkinter import ttk, StringVar, Toplevel
 from expensetracker import expensetracker, CATEGORIES
 from tkcalendar import DateEntry
+from ui.stats_view import StatsView
 
 
 class MainView:
@@ -8,6 +9,8 @@ class MainView:
         self.root = root
         self.handle_logout = handle_logout
         self.error_msg = None
+        self.stats_window = None
+        self.stats_view = None
         self._initialize()
 
     def _initialize(self):
@@ -48,6 +51,10 @@ class MainView:
                 self._frame, text=self.error_msg, foreground="red")
             error_msg.grid(row=6, column=5, columnspan=2, padx=6, pady=4)
 
+        stats_button = ttk.Button(
+            self._frame, text="Monthly stats", command=self._show_monthly_view)
+        stats_button.grid(row=7, column=5, columnspan=2, padx=6, pady=4)
+
         expenses = expensetracker.get_expenses()
         for (i, expense) in enumerate(expenses):
             amount = f"{expense.amount_int}.{'0' if expense.amount_dec < 10 else ''}{expense.amount_dec}€"
@@ -77,3 +84,12 @@ class MainView:
         expensetracker.logout()
         self._frame.destroy()
         self.handle_logout(self.root, MainView)
+
+    def _show_monthly_view(self):
+        if self.stats_window is not None:
+            self.stats_window.destroy()
+            self.stats_window = None
+            self.stats_view = None
+        else:
+            self.stats_window = Toplevel(self.root)
+            self.stats_view = StatsView(self.stats_window)

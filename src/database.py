@@ -3,6 +3,7 @@ from sqlite3 import IntegrityError
 from user import User
 from expense import Expense
 
+
 class Db:
     def __init__(self):
         self.con = sqlite3.connect("database.db")
@@ -41,8 +42,10 @@ class Db:
         query = """INSERT INTO Expenses (user_id, amount_int, amount_decimal, desc, category, date)
                    VALUES (?, ?, ?, ?, ?, ?)"""
         category_query = "SELECT id FROM Categories WHERE name = ?"
-        category = int(self.con.execute(category_query, [category]).fetchone()[0])
-        self.con.execute(query, [user_id, amount_int, amount_dec, desc, category, str(time)])
+        category = int(self.con.execute(
+            category_query, [category]).fetchone()[0])
+        self.con.execute(query, [user_id, amount_int,
+                         amount_dec, desc, category, str(time)])
         self.con.commit()
 
     def delete_all(self):
@@ -51,3 +54,11 @@ class Db:
         expense_query = "DELETE FROM Expenses"
         self.con.execute(expense_query)
         self.con.commit()
+
+    def get_month_expenses(self, year, month):
+        search_param = f"{year}-{month}%"
+        query = "SELECT * FROM Expenses WHERE date like ?"
+        results = self.con.execute(query, [search_param])
+        results = [Expense(e[2], e[3], e[6], e[4], e[5], e[0])
+                   for e in results]
+        return results
