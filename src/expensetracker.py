@@ -46,7 +46,7 @@ class Expensetracker:
         return True
 
     def get_month_expenses(self, year, month):
-        return self.db.get_month_expenses(year, month)
+        return self.db.get_month_expenses(self.user.user_id, year, month)
 
     def get_month_expenses_total(self, year, month):
         expenses = self.get_month_expenses(year, month)

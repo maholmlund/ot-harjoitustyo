@@ -55,10 +55,10 @@ class Db:
         self.con.execute(expense_query)
         self.con.commit()
 
-    def get_month_expenses(self, year, month):
+    def get_month_expenses(self, user_id, year, month):
         search_param = f"{year}-{month}%"
-        query = "SELECT * FROM Expenses WHERE date like ?"
-        results = self.con.execute(query, [search_param])
+        query = "SELECT * FROM Expenses WHERE user_id = ? AND date like ?"
+        results = self.con.execute(query, [user_id, search_param])
         results = [Expense(e[2], e[3], e[6], e[4], e[5], e[0])
                    for e in results]
         return results
