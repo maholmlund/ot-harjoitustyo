@@ -27,6 +27,7 @@ class StatsView:
         month_entry = ttk.Spinbox(self._frame, from_=1, to=12, textvariable=self.month_var)
         get_expenses_button = ttk.Button(self._frame, text="Get expenses", command=self._reload_expenses)
         total_label = ttk.Label(self._frame, text=f"Total this month: {self._sum_total}€")
+        date_label = ttk.Label(self._frame, text=f"Expenses for {self._selected_month}/{self._selected_year}")
 
         year_label.grid(row=0, column=4, padx=6, pady=4)
         year_entry.grid(row=0, column=5)
@@ -34,8 +35,9 @@ class StatsView:
         month_entry.grid(row=1, column=5, padx=6, pady=4)
         get_expenses_button.grid(row=2, column=5, padx=6, pady=4)
         total_label.grid(row=3, column=5, padx=6, pady=4)
+        date_label.grid(row=0, column=0, padx=6, pady=4, columnspan=4)
 
-        build_expense_table(self._frame, 0, 0, self._expenses)
+        build_expense_table(self._frame, 1, 0, self._expenses)
 
         self._frame.pack()
 
