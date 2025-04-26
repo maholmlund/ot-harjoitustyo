@@ -42,16 +42,18 @@ class StatsView:
     def _reload_expenses(self):
         self._selected_year = self.year_var.get()
         self._selected_month = self.month_var.get()
-        if len(self._selected_year) == 0:
+        try:
+            int(self._selected_year)
+        except ValueError:
             self._selected_year = str(datetime.now().year)
-        if len(self._selected_month) == 0:
+        try:
+            int(self._selected_month)
+        except ValueError:
             self._selected_month = str(datetime.now().month)
         if int(self._selected_month) < 10:
             self._selected_month = "0" + self._selected_month
-        self._expenses = expensetracker.get_month_expenses(
-            self._selected_year, self._selected_month)
-        self._sum_total = expensetracker.get_month_expenses_total(
-            self._selected_year, self._selected_month)
+        self._expenses = expensetracker.get_month_expenses(self._selected_year, self._selected_month)
+        self._sum_total = expensetracker.get_month_expenses_total(self._selected_year, self._selected_month)
         self._frame.destroy()
         self._frame = ttk.Frame(self._root)
         self._initialize()
