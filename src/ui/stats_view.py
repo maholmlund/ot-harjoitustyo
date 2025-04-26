@@ -2,69 +2,56 @@ from tkinter import ttk, StringVar
 from expensetracker import expensetracker
 from datetime import datetime
 
+from ui.helpers import build_expense_table
+
 
 class StatsView:
     def __init__(self, root):
-        self.root = root
-        self.selected_month = None
-        self.selected_year = None
-        self.expenses = []
-        self.sum_total = 0
+        self._root = root
+        self._selected_month = None
+        self._selected_year = None
+        self._expenses = []
+        self._sum_total = 0
+        self._frame = ttk.Frame(self._root)
         self._initialize()
         self._reload_expenses()
 
     def _initialize(self):
-        self._frame = ttk.Frame(self.root)
-
-        year_label = ttk.Label(self._frame, text="Year")
-        year_label.grid(row=0, column=4, padx=6, pady=4)
 
         self.year_var = StringVar(self._frame)
-        year_entry = ttk.Spinbox(
-            self._frame, from_=1900, to=2100, textvariable=self.year_var)
-        year_entry.grid(row=0, column=5)
-
-        month_label = ttk.Label(self._frame, text="Month")
-        month_label.grid(row=1, column=4, padx=6, pady=4)
-
         self.month_var = StringVar(self._frame)
-        year_entry = ttk.Spinbox(
-            self._frame, from_=1, to=12, textvariable=self.month_var)
-        year_entry.grid(row=1, column=5)
 
-        get_expenses_button = ttk.Button(
-            self._frame, text="Get expenses", command=self._reload_expenses)
+        year_label = ttk.Label(self._frame, text="Year")
+        year_entry = ttk.Spinbox(self._frame, from_=1900, to=2100, textvariable=self.year_var)
+        month_label = ttk.Label(self._frame, text="Month")
+        month_entry = ttk.Spinbox(self._frame, from_=1, to=12, textvariable=self.month_var)
+        get_expenses_button = ttk.Button(self._frame, text="Get expenses", command=self._reload_expenses)
+        total_label = ttk.Label(self._frame, text=f"Total this month: {self._sum_total}€")
+
+        year_label.grid(row=0, column=4, padx=6, pady=4)
+        year_entry.grid(row=0, column=5)
+        month_label.grid(row=1, column=4, padx=6, pady=4)
+        month_entry.grid(row=1, column=5, padx=6, pady=4)
         get_expenses_button.grid(row=2, column=5, padx=6, pady=4)
-
-        total_label = ttk.Label(
-            self._frame, text=f"Total this month: {self.sum_total}€")
         total_label.grid(row=3, column=5, padx=6, pady=4)
 
-        for (i, expense) in enumerate(self.expenses):
-            amount = f"{expense.amount_int}.{'0' if expense.amount_dec < 10 else ''}{expense.amount_dec}€"
-            amount_label = ttk.Label(self._frame, text=amount)
-            amount_label.grid(row=i, column=0, padx=6, pady=4)
-            desc_label = ttk.Label(self._frame, text=expense.desc)
-            desc_label.grid(row=i, column=1, padx=6, pady=4)
-            category_label = ttk.Label(self._frame, text=expense.category)
-            category_label.grid(row=i, column=2, padx=6, pady=4)
-            date_label = ttk.Label(self._frame, text=expense.date)
-            date_label.grid(row=i, column=3, padx=6, pady=4)
+        build_expense_table(self._frame, 0, 0, self._expenses)
 
         self._frame.pack()
 
     def _reload_expenses(self):
-        self.year = self.year_var.get()
-        self.month = self.month_var.get()
-        if len(self.year) == 0:
-            self.year = str(datetime.now().year)
-        if len(self.month) == 0:
-            self.month = str(datetime.now().month)
-        if int(self.month) < 10:
-            self.month = "0" + self.month
-        self.expenses = expensetracker.get_month_expenses(
-            self.year, self.month)
-        self.sum_total = expensetracker.get_month_expenses_total(
-            self.year, self.month)
+        self._selected_year = self.year_var.get()
+        self._selected_month = self.month_var.get()
+        if len(self._selected_year) == 0:
+            self._selected_year = str(datetime.now().year)
+        if len(self._selected_month) == 0:
+            self._selected_month = str(datetime.now().month)
+        if int(self._selected_month) < 10:
+            self._selected_month = "0" + self._selected_month
+        self._expenses = expensetracker.get_month_expenses(
+            self._selected_year, self._selected_month)
+        self._sum_total = expensetracker.get_month_expenses_total(
+            self._selected_year, self._selected_month)
         self._frame.destroy()
+        self._frame = ttk.Frame(self._root)
         self._initialize()

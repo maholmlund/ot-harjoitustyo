@@ -2,6 +2,7 @@ from tkinter import ttk, StringVar, Toplevel
 from expensetracker import expensetracker, CATEGORIES
 from tkcalendar import DateEntry
 from ui.stats_view import StatsView
+from ui.helpers import build_expense_table
 
 
 class MainView:
@@ -30,7 +31,7 @@ class MainView:
         stats_button = ttk.Button(self._frame, text="Monthly stats", command=self._show_monthly_view)
         stats_button.grid(row=7, column=5, columnspan=2, padx=6, pady=4)
 
-        self._build_expense_table(0, 0)
+        build_expense_table(self._frame, 0, 0, expensetracker.get_expenses())
         self._build_new_expense_controls(1, 4)
         self._frame.pack()
 
@@ -50,20 +51,6 @@ class MainView:
         category_field.grid(row=start_row + 2, column=start_col + 1, padx=6, pady=4)
         date_field.grid(row=start_row + 3, column=start_col + 1, padx=6, pady=4)
         create_button.grid(row=start_row + 4, column=start_col + 1, columnspan=2, padx=6, pady=4)
-
-    def _build_expense_table(self, start_row, start_col):
-        expenses = expensetracker.get_expenses()
-        for (i, expense) in enumerate(expenses):
-            i += start_row
-            amount = f"{expense.amount_int}.{'0' if expense.amount_dec < 10 else ''}{expense.amount_dec}€"
-            amount_label = ttk.Label(self._frame, text=amount)
-            amount_label.grid(row=i, column=start_col, padx=6, pady=4)
-            desc_label = ttk.Label(self._frame, text=expense.desc)
-            desc_label.grid(row=i, column=start_col + 1, padx=6, pady=4)
-            category_label = ttk.Label(self._frame, text=expense.category)
-            category_label.grid(row=i, column=start_col + 2, padx=6, pady=4)
-            date_label = ttk.Label(self._frame, text=expense.date)
-            date_label.grid(row=i, column=start_col + 3, padx=6, pady=4)
 
     def _create_expense(self):
         self.error_msg = None
