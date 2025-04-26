@@ -41,7 +41,7 @@ class MainView:
         sum_field = ttk.Entry(self._frame, textvariable=self.sum_var)
         desc_field = ttk.Entry(self._frame, textvariable=self.desc_var)
         category_field = ttk.OptionMenu(self._frame, self.category_var, *CATEGORIES)
-        date_field = DateEntry(self._frame, textxvariable=self.date_var, date_pattern="yyyy-mm-dd")
+        date_field = DateEntry(self._frame, textvariable=self.date_var, date_pattern="yyyy-mm-dd")
         create_button = ttk.Button(self._frame, text="Create", command=self._create_expense)
 
         sum_label.grid(row=start_row, column=start_col, padx=6, pady=4)
