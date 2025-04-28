@@ -17,7 +17,7 @@ class MainView:
 
     def _initialize(self):
         logout_button = ttk.Button(self._frame, text="Log out", command=self._logout)
-        logout_button.grid(row=0, column=5, padx=6, pady=4)
+        logout_button.grid(row=0, column=6, padx=6, pady=4)
 
         self.sum_var = StringVar(self._frame)
         self.desc_var = StringVar(self._frame)
@@ -26,13 +26,14 @@ class MainView:
 
         if self.error_msg:
             error_msg = ttk.Label(self._frame, text=self.error_msg, foreground="red")
-            error_msg.grid(row=6, column=5, columnspan=2, padx=6, pady=4)
+            error_msg.grid(row=6, column=6, columnspan=2, padx=6, pady=4)
 
-        stats_button = ttk.Button(self._frame, text="Monthly stats", command=self._show_monthly_view)
-        stats_button.grid(row=7, column=5, columnspan=2, padx=6, pady=4)
+        stats_button = ttk.Button(self._frame, text="Monthly stats",
+                                  command=self._show_monthly_view)
+        stats_button.grid(row=7, column=6, columnspan=2, padx=6, pady=4)
 
-        build_expense_table(self._frame, 0, 0, expensetracker.get_expenses())
-        self._build_new_expense_controls(1, 4)
+        build_expense_table(self._frame, 0, 0, expensetracker.get_expenses(), self._reload_window)
+        self._build_new_expense_controls(1, 5)
         self._frame.pack()
 
     def _build_new_expense_controls(self, start_row, start_col):
@@ -52,6 +53,11 @@ class MainView:
         date_field.grid(row=start_row + 3, column=start_col + 1, padx=6, pady=4)
         create_button.grid(row=start_row + 4, column=start_col + 1, columnspan=2, padx=6, pady=4)
 
+    def _reload_window(self):
+        self._frame.destroy()
+        self._frame = ttk.Frame(self.root)
+        self._initialize()
+
     def _create_expense(self):
         self.error_msg = None
         sum_value = self.sum_var.get()
@@ -60,9 +66,7 @@ class MainView:
         date = self.date_var.get()
         if not expensetracker.create_expense(sum_value, desc, category, date):
             self.error_msg = "invalid number format"
-        self._frame.destroy()
-        self._frame = ttk.Frame(self.root)
-        self._initialize()
+        self._reload_window()
 
     def _logout(self):
         expensetracker.logout()

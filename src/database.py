@@ -48,6 +48,11 @@ class Db:
                          amount_dec, desc, category, str(time)])
         self.con.commit()
 
+    def delete_expense(self, expense_id):
+        query = "DELETE FROM Expenses WHERE id = ?"
+        self.con.execute(query, [expense_id])
+        self.con.commit()
+
     def delete_all(self):
         user_query = "DELETE FROM Users"
         self.con.execute(user_query)

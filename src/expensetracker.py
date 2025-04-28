@@ -53,6 +53,9 @@ class Expensetracker:
                                amount_dec, desc, category, date)
         return True
 
+    def delete_expense(self, expense_id):
+        self.db.delete_expense(expense_id)
+
     def get_month_data(self, year, month):
         try:
             year = int(year)
