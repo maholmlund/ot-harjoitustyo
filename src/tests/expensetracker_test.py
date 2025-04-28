@@ -27,7 +27,7 @@ class DummyDB:
     def get_expenses(self, user_id):
         return self.expenses
 
-    def get_month_expenses(self, year, month):
+    def get_month_expenses(self, user_id, year, month):
         date_start = f"{year}-{month}"
         return list(filter(lambda e: e.date.startswith(date_start), self.expenses))
 
@@ -81,10 +81,30 @@ class TestExpenseTracker(unittest.TestCase):
         self.assertFalse(self.e.create_expense(
             "python", "ostoksia", "ruoka", "2025-11"))
 
-    def test_get_month_expenses_total(self):
+    def create_expenses(self):
         self.e.login("esimerkki", "salasana")
         self.e.create_expense("32.11", "jotain lisää",
-                              "sijoitukset", "2025-04")
+                              "sijoitukset", "2025-04-28")
         self.e.create_expense("1.1", "halpa ostos",
-                              "ruoka", "2025-04")
-        self.assertEqual(self.e.get_month_expenses_total("2025", "04"), 33.21)
+                              "ruoka", "2025-04-28")
+        self.e.create_expense("6.23", "banaaneja",
+                              "ruoka", "2025-04-28")
+        self.e.create_expense("0.6", "banaani",
+                              "ruoka", "2025-01-28")
+
+    def test_get_month_data(self):
+        self.create_expenses()
+        month_data = self.e.get_month_data("2025", "4")
+        self.assertEqual(month_data.total_sum, 39.44)
+        self.assertEqual(month_data.sums_by_category["ruoka"], 7.33)
+        self.assertEqual(len(month_data.expenses), 3)
+
+    def test_get_month_data_invalid_format(self):
+        self.create_expenses()
+        month_data = self.e.get_month_data("kaksnollakaksviis", "huhtikuu")
+        self.assertIsNone(month_data)
+
+    def test_get_month_data_date_outside_range(self):
+        self.create_expenses()
+        month_data = self.e.get_month_data("999999", "1")
+        self.assertIsNone(month_data)
