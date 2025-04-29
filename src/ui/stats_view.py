@@ -6,13 +6,14 @@ from ui.helpers import build_expense_table
 
 
 class StatsView:
-    def __init__(self, root):
+    def __init__(self, root, reload_all_windows):
         self._root = root
+        self._reload_all_windows = reload_all_windows
         self._frame = ttk.Frame(self._root)
         self._year_var = StringVar(self._frame)
         self._month_var = StringVar(self._frame)
         self._month_data = None
-        self._reload_window()
+        self.reload_window()
 
     def _initialize(self):
 
@@ -21,7 +22,7 @@ class StatsView:
         month_label = ttk.Label(self._frame, text="Month")
         month_entry = ttk.Spinbox(self._frame, from_=1, to=12, textvariable=self._month_var)
         get_expenses_button = ttk.Button(
-            self._frame, text="Get expenses", command=self._reload_window)
+            self._frame, text="Get expenses", command=self.reload_window)
         total_label = ttk.Label(
             self._frame, text=f"Total this month: {self._month_data.total_sum}€")
         date_label = ttk.Label(
@@ -37,7 +38,7 @@ class StatsView:
         date_label.grid(row=0, column=0, padx=6, pady=4, columnspan=4)
         category_label.grid(row=5, column=5, columnspan=2, padx=6, pady=4)
 
-        build_expense_table(self._frame, 1, 0, self._month_data.expenses, self._reload_window)
+        build_expense_table(self._frame, 1, 0, self._month_data.expenses, self._reload_all_windows)
         self._build_category_sum_list(6, 5)
 
         self._frame.pack()
@@ -50,7 +51,7 @@ class StatsView:
             category_label.grid(row=start_row + row, column=start_col, padx=6, pady=4)
             sum_label.grid(row=start_row + row, column=start_col + 1, padx=6, pady=4)
 
-    def _reload_window(self):
+    def reload_window(self):
         self._reload_expenses()
         self._frame.destroy()
         self._frame = ttk.Frame(self._root)

@@ -32,7 +32,7 @@ class MainView:
                                   command=self._show_monthly_view)
         stats_button.grid(row=7, column=6, columnspan=2, padx=6, pady=4)
 
-        build_expense_table(self._frame, 0, 0, expensetracker.get_expenses(), self._reload_window)
+        build_expense_table(self._frame, 0, 0, expensetracker.get_expenses(), self._reload_expenses)
         self._build_new_expense_controls(1, 5)
         self._frame.pack()
 
@@ -58,6 +58,11 @@ class MainView:
         self._frame = ttk.Frame(self.root)
         self._initialize()
 
+    def _reload_expenses(self):
+        self._reload_window()
+        if self.stats_view is not None:
+            self.stats_view.reload_window()
+
     def _create_expense(self):
         self.error_msg = None
         sum_value = self.sum_var.get()
@@ -66,7 +71,7 @@ class MainView:
         date = self.date_var.get()
         if not expensetracker.create_expense(sum_value, desc, category, date):
             self.error_msg = "invalid number format"
-        self._reload_window()
+        self._reload_expenses()
 
     def _logout(self):
         expensetracker.logout()
@@ -79,7 +84,7 @@ class MainView:
         else:
             self.stats_window = Toplevel(self.root)
             self.stats_window.protocol("WM_DELETE_WINDOW", self._on_stats_close)
-            self.stats_view = StatsView(self.stats_window)
+            self.stats_view = StatsView(self.stats_window, self._reload_expenses)
 
     def _on_stats_close(self):
         self.stats_window.destroy()
