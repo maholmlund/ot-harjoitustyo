@@ -98,6 +98,7 @@ class TestExpenseTracker(unittest.TestCase):
         self.assertEqual(month_data.total_sum, 39.44)
         self.assertEqual(month_data.sums_by_category["ruoka"], 7.33)
         self.assertEqual(len(month_data.expenses), 3)
+        self.assertEqual(month_data.daily_average, 1.31)
 
     def test_get_month_data_invalid_format(self):
         self.create_expenses()
