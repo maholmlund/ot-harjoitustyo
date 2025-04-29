@@ -27,7 +27,7 @@ Sovelluksessa on yhtä käyttäjätyyppiä, ns. normaalikäyttäjä.
   - Menolle voi asettaa päivämäärän (tehty)
 - Käyttäjä näkee omat aiemmin kirjatut menonsa (tehty)
 - Käyttäjä näkee statistiikkaa omista menoista, mm. (tehty)
-  - Kategorian perusteella
+  - Kategorian perusteella (tehty)
   - Kuukauden menojen keskiarvo (tehty)
 
 ### Käyttöliittymäluonnos
@@ -39,5 +39,5 @@ Sovelluksessa on kaksi näkymää: kirjautumisikkuna ja varsinainen näkymä. Uu
 
 - Käyttäjä voi itse lisätä uusia menokategorioita
 - Käyttäjä voi muokata aiempia menoja
-- Käyttäjä voi poistaa menoja
+- Käyttäjä voi poistaa menoja (tehty)
 - Käyttäjä voi valita missä valuutassa meno on listattu
