@@ -52,3 +52,5 @@ $ poetry run invoke lint
 
 ## Releaset
 [Viikko 5](https://github.com/maholmlund/ot-harjoitustyo/releases/tag/viikko5)
+
+[Viikko 6](https://github.com/maholmlund/ot-harjoitustyo/releases/tag/viikko6)
