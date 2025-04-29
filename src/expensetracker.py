@@ -1,3 +1,5 @@
+from datetime import date
+
 from database import Db
 from expense import sum_expenses
 
@@ -9,10 +11,11 @@ CATEGORIES = ["ruoka",
 
 
 class MonthData:
-    def __init__(self, expenses, total_sum, sums_by_category):
+    def __init__(self, expenses, total_sum, sums_by_category, daily_average):
         self.expenses = expenses
         self.total_sum = total_sum
         self.sums_by_category = sums_by_category
+        self.daily_average = daily_average
 
 
 class Expensetracker:
@@ -40,7 +43,7 @@ class Expensetracker:
     def get_expenses(self):
         return self.db.get_expenses(self.user.user_id)
 
-    def create_expense(self, amount, desc, category, date):
+    def create_expense(self, amount, desc, category, creation_date):
         try:
             amount = format(float(amount), ".2f")
         except ValueError:
@@ -50,11 +53,18 @@ class Expensetracker:
         amount_int = int(amount.split(".")[0])
         amount_dec = int(amount.split(".")[1])
         self.db.create_expense(self.user.user_id, amount_int,
-                               amount_dec, desc, category, date)
+                               amount_dec, desc, category, creation_date)
         return True
 
     def delete_expense(self, expense_id):
         self.db.delete_expense(expense_id)
+
+    def _calculate_daily_average(self, year, month, total_sum):
+        next_month = month + 1 if month < 12 else 1
+        next_year = year if month < 12 else year + 1
+        n_days = date(next_year, next_month, 1) - date(year, month, 1)
+        n_days = n_days.days
+        return round(total_sum / n_days, 2)
 
     def get_month_data(self, year, month):
         try:
@@ -75,7 +85,8 @@ class Expensetracker:
             expenses, category) for category in CATEGORIES}
         sums_by_category = {category: sum_expenses(
             expenses_by_category[category]) for category in CATEGORIES}
-        return MonthData(expenses, total_sum, sums_by_category)
+        daily_average = self._calculate_daily_average(int(year), int(month), total_sum)
+        return MonthData(expenses, total_sum, sums_by_category, daily_average)
 
 
 expensetracker = Expensetracker(Db())

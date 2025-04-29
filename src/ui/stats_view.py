@@ -25,6 +25,8 @@ class StatsView:
             self._frame, text="Get expenses", command=self.reload_window)
         total_label = ttk.Label(
             self._frame, text=f"Total this month: {self._month_data.total_sum}€")
+        average_label = ttk.Label(
+            self._frame, text=f"Daily average: {self._month_data.daily_average}€/day")
         date_label = ttk.Label(
             self._frame, text=f"Expenses for {self._month_var.get()}/{self._year_var.get()}")
         category_label = ttk.Label(self._frame, text="Total sum by category:")
@@ -35,11 +37,12 @@ class StatsView:
         month_entry.grid(row=1, column=6, padx=6, pady=4)
         get_expenses_button.grid(row=2, column=6, padx=6, pady=4)
         total_label.grid(row=4, column=5, columnspan=2, padx=6, pady=4)
+        average_label.grid(row=5, column=5, columnspan=2, padx=6, pady=4)
         date_label.grid(row=0, column=0, padx=6, pady=4, columnspan=4)
-        category_label.grid(row=5, column=5, columnspan=2, padx=6, pady=4)
+        category_label.grid(row=6, column=5, columnspan=2, padx=6, pady=4)
 
         build_expense_table(self._frame, 1, 0, self._month_data.expenses, self._reload_all_windows)
-        self._build_category_sum_list(6, 5)
+        self._build_category_sum_list(7, 5)
 
         self._frame.pack()
 
