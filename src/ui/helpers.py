@@ -14,7 +14,7 @@ def build_expense_table(frame, start_row, start_col, expenses, after_delete):
         category_label.grid(row=i, column=start_col + 2, padx=6, pady=4)
         date_label = ttk.Label(frame, text=expense.date)
         date_label.grid(row=i, column=start_col + 3, padx=6, pady=4)
-        delete_button = ttk.Button(frame, text="🗑️", command=delete_expense(
+        delete_button = ttk.Button(frame, text="Delete", command=delete_expense(
             expense.id, after_delete=after_delete))
         delete_button.grid(row=i, column=start_col + 4, padx=6, pady=4)
 
