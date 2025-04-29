@@ -13,4 +13,5 @@ def sum_expenses(expenses):
     ints = sum(e.amount_int for e in expenses)
     decs = sum(e.amount_dec for e in expenses)
     ints += decs // 100
+    decs %= 100
     return ints + (decs / 100)
