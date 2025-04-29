@@ -18,7 +18,8 @@ class MonthData:
     Attributes:
         expenses: Lista joka sisältää kaikki käyttäjän kuukauden menot
         total_sum: Kaikkien käyttäjän kuukauden menojen summa
-        sums_by_category: Sanakirja joka sisältää jokaisen kategorian menojen summan kuukauden ajalta
+        sums_by_category: Sanakirja joka sisältää jokaisen kategorian menojen
+                          summan kuukauden ajalta
         daily_average: Kuukauden menojen keskiarvo päivää kohti
     """
 
@@ -28,7 +29,8 @@ class MonthData:
         Args:
             expenses: Lista kaikista kuukauden menoista
             total_sum: Kuukauden menojen summa
-            sums_by_category: Sanakirja joka sisältää jokaisen menokategorian osalta menojen summan kuukauden ajalta
+            sums_by_category: Sanakirja joka sisältää jokaisen menokategorian
+                              osalta menojen summan kuukauden ajalta
             daily_average: Keskimääräinen menojen määrä päivässä kuukauden ajalta
         """
         self.expenses = expenses
@@ -80,8 +82,8 @@ class Expensetracker:
     def create_user(self, username, passwd):
         """Luo järjestelmään uuden käyttäjän.
 
-        Tarkastaa että käyttäjänimi ja salasana ovat riittävän pitkiä ja että käyttäjänimi ei ole varattu.
-        Mikäli syötteet ovat kunnossa, luo järjestelmään uuden käyttäjän.
+        Tarkastaa että käyttäjänimi ja salasana ovat riittävän pitkiä ja että käyttäjänimi
+        ei ole varattu. Mikäli syötteet ovat kunnossa, luo järjestelmään uuden käyttäjän.
 
         Args:
             username: Käyttäjänimi (väh. 4 merkkiä)
@@ -155,8 +157,9 @@ class Expensetracker:
             month: Valittu kuukausi lukuna ja merkkijonona
 
         Returns:
-            None jos vuosi tai kuukausi ei sisältänyt numeroa tai vuosi ei ollut välillä [1000, 9999] tai kuukausi ei ollut välillä [1, 12], muutoin
-            MonthData-objekti joka sisältää tiedot kuukauden menoista
+            None jos vuosi tai kuukausi ei sisältänyt numeroa tai vuosi ei ollut välillä
+            [1000, 9999] tai kuukausi ei ollut välillä [1, 12], muutoin MonthData-objekti
+            joka sisältää tiedot kuukauden menoista
         """
         try:
             year = int(year)
