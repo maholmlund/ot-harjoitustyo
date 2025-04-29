@@ -75,9 +75,13 @@ class MainView:
 
     def _show_monthly_view(self):
         if self.stats_window is not None:
-            self.stats_window.destroy()
-            self.stats_window = None
-            self.stats_view = None
+            self._on_stats_close()
         else:
             self.stats_window = Toplevel(self.root)
+            self.stats_window.protocol("WM_DELETE_WINDOW", self._on_stats_close)
             self.stats_view = StatsView(self.stats_window)
+
+    def _on_stats_close(self):
+        self.stats_window.destroy()
+        self.stats_window = None
+        self.stats_view = None
