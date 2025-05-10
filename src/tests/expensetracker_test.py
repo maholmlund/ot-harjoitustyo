@@ -2,6 +2,7 @@ import unittest
 from expensetracker import Expensetracker
 from user import User
 from expense import Expense
+from config import CONFIG
 
 
 class DummyDB:
@@ -35,6 +36,7 @@ class DummyDB:
 class TestExpenseTracker(unittest.TestCase):
     def setUp(self):
         self.e = Expensetracker(DummyDB())
+        CONFIG["categories"] = ["ruoka", "liikenne", "liikunta", "kulttuuri", "sijoitukset"]
         self.e.create_user("esimerkki", "salasana")
 
     def test_create_user_valid(self):

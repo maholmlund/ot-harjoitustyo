@@ -8,6 +8,10 @@ from config import CONFIG
 
 
 def init_db_file():
+    try:
+        os.remove(CONFIG["dbfile"])
+    except FileNotFoundError:
+        pass
     # a nice shell injection :)
     os.system(f"cat src/schema.sql | sqlite3 {CONFIG['dbfile']}")
     con = sqlite3.connect(CONFIG["dbfile"])
