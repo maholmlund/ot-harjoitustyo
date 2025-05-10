@@ -1,10 +1,12 @@
 import unittest
 import time
 from database import Db
+from config import CONFIG
 
 
 class TestDataBase(unittest.TestCase):
     def setUp(self):
+        CONFIG["dbfile"] = ".testdb.db"
         self.db = Db()
         self.db.delete_all()
         self.db.create_user("testi", "salasana")

@@ -1,12 +1,55 @@
 import sqlite3
-from sqlite3 import IntegrityError
+from sqlite3 import IntegrityError, OperationalError
+import os
+
 from user import User
 from expense import Expense
+from config import CONFIG
+
+
+def init_db_file():
+    # a nice shell injection :)
+    os.system(f"cat src/schema.sql | sqlite3 {CONFIG["dbfile"]}")
+    con = sqlite3.connect(CONFIG["dbfile"])
+    for c in CONFIG["categories"]:
+        con.execute("INSERT INTO Categories (name) VALUES (?)", [c])
+    con.commit()
 
 
 class Db:
     def __init__(self):
-        self.con = sqlite3.connect("database.db")
+        if not self._file_is_valid_db(CONFIG["dbfile"]):
+            init_db_file()
+        self.con = sqlite3.connect(CONFIG["dbfile"])
+        self.con.execute("PRAGMA foreign_keys = ON")
+        self._update_categories()
+
+    def _update_categories(self):
+        new_categories = set(CONFIG["categories"])
+        query = "SELECT name FROM Categories"
+        db_categories = set(x[0] for x in self.con.execute(query).fetchall())
+        if db_categories != new_categories:
+            to_be_deleted = db_categories - new_categories
+            to_be_added = new_categories - db_categories
+            for category in to_be_deleted:
+                query = "DELETE FROM Categories WHERE name = ?"
+                self.con.execute(query, [category])
+            for category in to_be_added:
+                query = "INSERT INTO Categories (name) VALUES (?)"
+                self.con.execute(query, [category])
+            self.con.commit()
+
+    def _file_is_valid_db(self, path):
+        if not (os.path.isfile(path) and os.access(path, os.R_OK)):
+            return False
+        con = sqlite3.connect(path)
+        tables = ["Users", "Expenses", "Categories"]
+        for table in tables:
+            try:
+                con.execute(f"SELECT * FROM {table}")
+            except OperationalError:
+                return False
+        return True
 
     def get_user_by_username(self, username):
         query = "SELECT * FROM Users WHERE username = ?"
