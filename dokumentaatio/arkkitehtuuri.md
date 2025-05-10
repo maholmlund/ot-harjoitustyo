@@ -1,6 +1,8 @@
 # Arkkitehtuuri
 
-Ohjelma käyttää kolmea keskeistä luokkaa: Expense-luokka kuvaa kirjattua menoa, User-luokka käyttäjää ja Category menokategoriaa. Tietokannassa jokainen näistä luokista vastaa yhtä taulua.
+## Luokat
+
+Ohjelma käyttää kolmea keskeistä luokkaa tiedon tallentamiseen: Expense-luokka kuvaa kirjattua menoa, User-luokka käyttäjää ja Category menokategoriaa. Tietokannassa jokainen näistä luokista vastaa yhtä taulua. Nämä luokat eivät varsinaisesti tarjoa mitään omaa toiminnallisuutta (funktioita) pois lukien Expense, jolla on oma funktio usean menon summaamiseen.
 
 ```mermaid
  classDiagram
@@ -20,7 +22,15 @@ Ohjelma käyttää kolmea keskeistä luokkaa: Expense-luokka kuvaa kirjattua men
       }
 ```
 
-Sovelluksen rakenne on kolmikerroksinen: Ohjelman sovelluslogiikka on eriytetty erilliseen luokkaansa nimeltä Expensetracker. Sovelluksen käyttöliittymä kommunikoi Expensetracker-luokasta luodun globaalin instanssin kanssa ja näyttää siltä saamansa datan. Osan datasta käyttöliittymä lukee suoraan konfiguraatiotiedostosta käyttäen globaalia konfig-instanssia. ExpenseTracker-luokka ottaa konstruktorissa argumenttina tietokantayhteyden ja tallentaa ja lukee dataa tämän yhteyden kautta.
+Lisäksi ohjelmassa on seuraavat luokat:
+- ExpenseTracker - Sovelluslogiikasta vastaava luokka. Ohjelmassa on tästä luokasta yksi globaali instanssi jota käyttöliittymä käyttää.
+- MonthData - Luokka, joka sisältää tietoa kuukauden menoista. Ei tarjoa muuta toiminnallisuutta.
+
+Näiden lisäksi globaali muuttuja CONFIG on sanakirja, joka sisältää sovelluksen konfiguraation.
+
+## Pakkausrakenne
+
+Sovelluksen rakenne on kolmikerroksinen: Ohjelman sovelluslogiikka on eriytetty erilliseen luokkaansa nimeltä Expensetracker. Sovelluksen käyttöliittymä kommunikoi Expensetracker-luokasta luodun globaalin instanssin kanssa ja näyttää siltä saamansa datan. Osan datasta käyttöliittymä lukee suoraan konfiguraatiotiedostosta käyttäen globaalia config-instanssia. ExpenseTracker-luokka ottaa konstruktorissa argumenttina tietokantayhteyden ja tallentaa ja lukee dataa tämän yhteyden kautta. Sekä tietokanta että ExpenseTracker lukevat tietoja config-instanssista.
 
 ```mermaid
 ---
@@ -33,6 +43,7 @@ classDiagram
      expensetracker --> database
      expensetracker --> config
      ui --> config
+     database --> config
 ```
 
 ## Järjestelmän pääkomponentit
@@ -54,7 +65,7 @@ Luokka, joka tarjoaa tietokannan käsittelyyn tarvittavat funktiot. Luo konstruk
 
 ### Config
 
-Globaali sanakirja, joka sisältää sovelluksen käytössä olevat asetukset. Kun ohjelma käynnistetään, lukee load_config-funktio konfiguraatiotiedoston ja asettaa käytössä olevat asetukset. Tämän jälkeen konfiguraatiota voidaan lukea missä kohtaa tahansa ohjelmakoodia.
+Globaali sanakirja, joka sisältää sovelluksen käytössä olevat asetukset. Kun ohjelma käynnistetään, lukee load_config-funktio konfiguraatiotiedoston ja asettaa käytössä olevat asetukset. Tämän jälkeen konfiguraatiota voidaan lukea missä kohtaa tahansa ohjelmakoodia. ExpenseTracker, UI ja DataBase lukevat kaikki tietoja tästä konfiguraatiosta.
 
 ## Käyttöliittymä
 
@@ -69,7 +80,7 @@ Eri näkymät hakevat datansa globaalilta ExpenseTracker-instanssilta ja globaal
 
 ## Datan pysyväistallennus
 
-Sovellus tallentaa tietoa sqlite-tietokantaan. Tietojen tallennuksesta vastaa Database-luokka. Tietokantatiedoston nimi ladataan konfiguraatiotiedostosta. Tietokannassa on kolme eri taulua: Yksi käyttäjille, yksi menoille ja yksi menokategorioille. Näistä käyttäjät ja menot voivat muuttua sovelluksen ollessa käynnissä. Muutokset kategorioihin tapahtuvat muuttamalla konfiguraatiotiedostoa ja tietokantataulu päivitetään aina sovelluksen käynnistyessä uudelleen.
+Sovellus tallentaa tietoa sqlite-tietokantaan. Tietojen tallennuksesta vastaa Database-luokka. Tietokantatiedoston nimi ladataan konfiguraatiotiedostosta. Tietokannassa on kolme eri taulua: Yksi käyttäjille, yksi menoille ja yksi menokategorioille. Näistä käyttäjät ja menot voivat muuttua sovelluksen ollessa käynnissä. Muutokset kategorioihin tapahtuvat muuttamalla konfiguraatiotiedostoa ja tietokantataulu päivitetään aina sovelluksen käynnistyessä uudelleen. Tietokannan tarkan rakenteen näkee [tästä tiedostosta](../src/schema.sql).
 
 ## Sekvenssikaaviot
 
@@ -124,6 +135,17 @@ sequenceDiagram
 ```
 
 Tietokantayhteys avataan tiedostossa src/expensetracker.py globaalin ExpenseTracker-instanssin luonnin yhteydessä. Tietokanta lukee globaalista konfiguraatiosta käytössä olevan tietokantatiedoston nimen ja avaa tähän yhteyden. Tämän jälkeen luetaan käytössä olevat kategoriat konfiguraatiosta. Mikäli ne ovat eri kuin tietokannassa, päivitetään tietokannan Categories-taulu. Tämän jälkeen yhteys palautetaan ExpenseTracker-instanssille.
+
+### Loput toiminnallisuudet
+
+Ohjelman kaikki toiminnallisuudet noudattavat samaa perusrakennetta kuin mitä yllä olevat sekvenssikaaviot:
+1. Käyttäjä suorittaa toiminnon käyttöliittymässä
+2. Käyttöliittymä välittää datan globaalille ExpenseTracker-instanssille
+3. expensetracker lukee tarvittaessa konfiguraatiota
+4. expensetracker välittää datan tietokannalle
+5. Tietokanta tallentaa tiedon
+6. Suoritus palaa expensetrackerille joka paluttaa suorituksen käyttöliittymälle
+7. Käyttöliittymä latautuu uudestaan näyttääkseen uudet tiedot
 
 ## Rakenteelliset parannusideat
 
