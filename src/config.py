@@ -2,6 +2,13 @@ from tomllib import load, TOMLDecodeError
 import os
 
 
+DEFAULT_VALUES = {
+    "currency": ("€", str),
+    "dbfile": ("database.db", str),
+    "categories": (["ruoka", "liikenne", "liikunta", "kulttuuri", "sijoitukset"], list)
+}
+
+
 def load_config():
     """Funktio, joka lataa sovelluksen konfiguraation tiedostosta trackerconf.toml.
 
@@ -21,12 +28,7 @@ def load_config():
     else:
         print("Error reading config file: could not open file")
         print("Using default configuration")
-    default_values = {
-        "currency": ("€", str),
-        "dbfile": ("database.db", str),
-        "categories": (["ruoka", "liikenne", "liikunta", "kulttuuri", "sijoitukset"], list)
-    }
-    for key, (value, target_type) in default_values.items():
+    for key, (value, target_type) in DEFAULT_VALUES.items():
         if key not in data:
             data[key] = value
         elif not isinstance(data[key], target_type):
