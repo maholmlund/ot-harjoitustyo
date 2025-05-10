@@ -158,14 +158,6 @@ class Db:
         self._con.execute(query, [expense_id])
         self._con.commit()
 
-    def delete_all(self):
-        """Poistaa tietokannasta kaikki käyttäjät ja menot."""
-        user_query = "DELETE FROM Users"
-        self._con.execute(user_query)
-        expense_query = "DELETE FROM Expenses"
-        self._con.execute(expense_query)
-        self._con.commit()
-
     def get_month_expenses(self, user_id, year, month):
         """Hakee käyttäjän kaikki kuukauden menot.
 
