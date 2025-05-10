@@ -20,7 +20,7 @@ Ohjelma käyttää kolmea keskeistä luokkaa: Expense-luokka kuvaa kirjattua men
       }
 ```
 
-Sovelluksen rakenne on kolmikerroksinen: Ohjelman sovelluslogiikka on eriytetty erilliseen luokkaansa nimeltä Expensetracker. Sovelluksen käyttöliittymä kommunikoi Expensetracker-luokasta luodun globaalin instanssin kanssa ja näyttää siltä saamansa datan. ExpenseTracker-luokka ottaa konstruktorissa argumenttina tietokantayhteyden ja tallentaa ja lukee dataa tämän yhteyden kautta.
+Sovelluksen rakenne on kolmikerroksinen: Ohjelman sovelluslogiikka on eriytetty erilliseen luokkaansa nimeltä Expensetracker. Sovelluksen käyttöliittymä kommunikoi Expensetracker-luokasta luodun globaalin instanssin kanssa ja näyttää siltä saamansa datan. Osan datasta käyttöliittymä lukee suoraan konfiguraatiotiedostosta käyttäen globaalia konfig-instanssia. ExpenseTracker-luokka ottaa konstruktorissa argumenttina tietokantayhteyden ja tallentaa ja lukee dataa tämän yhteyden kautta.
 
 ```mermaid
 ---
@@ -31,6 +31,8 @@ Sovelluksen rakenne on kolmikerroksinen: Ohjelman sovelluslogiikka on eriytetty 
 classDiagram
      ui --> expensetracker
      expensetracker --> database
+     expensetracker --> config
+     ui --> config
 ```
 
 ## Järjestelmän pääkomponentit
@@ -50,9 +52,28 @@ Komponentti, joka vastaa graafisesta käyttöliittymästä hyödyntäen TkInter-
 
 Luokka, joka tarjoaa tietokannan käsittelyyn tarvittavat funktiot. Luo konstruktorissa yhteyden tietokantaan ja on tämän jälkeen valmis suorittamaan ExpenseTracker-luokan pyytämät tehtävät. Tarvittaessa tiedon tallennustapa voidaan muuttaa koskematta sovelluslogiikkaan muokkaamalla tätä luokkaa (kts. [testit](../src/tests/expensetracker_test.py)).
 
-## Ohjelman toiminta
+### Config
 
-Käyttäjän sisäänkirjautuminen noudattaa seuraavaa sekvenssikaaviota:
+Globaali sanakirja, joka sisältää sovelluksen käytössä olevat asetukset. Kun ohjelma käynnistetään, lukee load_config-funktio konfiguraatiotiedoston ja asettaa käytössä olevat asetukset. Tämän jälkeen konfiguraatiota voidaan lukea missä kohtaa tahansa ohjelmakoodia.
+
+## Käyttöliittymä
+
+Sovelluksessa on kolme erillistä näkymää:
+- LoginView
+- MainView
+- StatsView
+
+LoginView vastaa kirjautumisikkunan näyttämisestä. Sille annetaan konstruktorissa funktio joka vastaa päänäkymän avaamisesta kirjautumisen jälkeen. MainView näyttää sovelluksen päänäkymän jossa on mahdollista mm. tarkastella omia menoja ja kirjata uusia menoja. Tämä luokka otta konstruktorissa funktion, joka kutsuttaessa näyttää kirjautumisikkunan. Tätä funktiota kutsutaan kun käyttäjä kirjautuu sovelluksesta ulos. StatsView muodostaa erillisen ikkuna kuukausittaisille menoille. Se ottaa konstruktorissa funktion, joka kutsuttaessa lataa pääikkunan uudelleen. Tämä tarvitaan, jotta statistiikkaikkunassa suoritettu menon poisto välittyy myös pääikkunaan.
+
+Eri näkymät hakevat datansa globaalilta ExpenseTracker-instanssilta ja globaalilta CONFIG-instanssilta.
+
+## Datan pysyväistallennus
+
+Sovellus tallentaa tietoa sqlite-tietokantaan. Tietojen tallennuksesta vastaa Database-luokka. Tietokantatiedoston nimi ladataan konfiguraatiotiedostosta. Tietokannassa on kolme eri taulua: Yksi käyttäjille, yksi menoille ja yksi menokategorioille. Näistä käyttäjät ja menot voivat muuttua sovelluksen ollessa käynnissä. Muutokset kategorioihin tapahtuvat muuttamalla konfiguraatiotiedostoa ja tietokantataulu päivitetään aina sovelluksen käynnistyessä uudelleen.
+
+## Sekvenssikaaviot
+
+### Käyttäjän sisäänkirjautuminen noudattaa seuraavaa sekvenssikaaviota:
 ```mermaid
 sequenceDiagram
   actor User
@@ -63,11 +84,13 @@ sequenceDiagram
   UI->>Expensetracker: login("esimerkki", "salasana")
   Expensetracker->>Database: get_user_by_username("esimerkki")
   Database-->>Expensetracker: user
-  Expensetracker-->>UI: user
+  Expensetracker-->>UI: True
   UI->UI: MainView()
 ```
 
-Menon kirjaamista kuvaava sekvenssikaavio:
+Käyttäjän yrittäessä kirjautua sisään käyttöliittymä lähettää syötetyn salasanan ja käyttäjänimen globaalille ExpenseTracker-instanssille. Tämä tarkastaa tietokannasta täsmäävätkö käyttäjänimi ja salasana. Mikäli ne täsmäävät, expensetracker kirjaa käyttäjän sisään ja palauttaa käyttöliittymälle arvon True. Näin käyttöliittymä saa tietää, että sisäänkirjautuminen onnistui päänäkymän voi näyttää.
+
+### Menon kirjaamista kuvaava sekvenssikaavio:
 ```mermaid
 sequenceDiagram
   actor User
@@ -81,3 +104,29 @@ sequenceDiagram
   Expensetracker-->>UI: None
   UI->>UI: MainView()
 ```
+
+Kun käyttäjä painaa Create-painiketta päänäkymässä, käyttöliittymä lähettää käyttäjän syöttämät tiedot globaalille ExpenseTracker-instanssille. Tämä lähettää tiedot tietokannalle ja liittää mukaan sillä hetkellä kirjautuneen käyttäjän id:n. Tietokanta tallentaa tiedot. Tämän jälkeen käyttöliittymä lataa itsensä uudelleen jotta uusi meno näkyisi käyttöliittymässä.
+
+### Tietokantayhteyden avaamista kuvaava sekvenssikaaavio:
+```mermaid
+sequenceDiagram
+  actor expensetracker.py
+  participant Database
+  participant CONFIG
+  expensetracker.py->>Database: Db()
+  Database->>CONFIG: CONFIG["dbfile"]
+  CONFIG-->>Database: "database.db"
+  Database->>Database: sqlite3.connect("database.db")
+  Database->>CONFIG: CONFIG["categories"]
+  CONFIG-->>Database: ["ruoka", "liikenne"]
+  Database->>Database: _update_categories()
+  Database-->>expensetracker.py: Database
+```
+
+Tietokantayhteys avataan tiedostossa src/expensetracker.py globaalin ExpenseTracker-instanssin luonnin yhteydessä. Tietokanta lukee globaalista konfiguraatiosta käytössä olevan tietokantatiedoston nimen ja avaa tähän yhteyden. Tämän jälkeen luetaan käytössä olevat kategoriat konfiguraatiosta. Mikäli ne ovat eri kuin tietokannassa, päivitetään tietokannan Categories-taulu. Tämän jälkeen yhteys palautetaan ExpenseTracker-instanssille.
+
+## Rakenteelliset parannusideat
+
+Ohjelman käyttöliittymäkoodi on hieman sekavaa. Näkymästä toiseen siirtymisen voisi totetuttaa paremmin src/ui/ui.py-tiedostossa, jolloin koodista tulisi helpompaa hallita ja mahdollisten uusien näkymien lisääminen tulevaisuudessa helpottuisi.
+
+Globaalin konfiguraatiotiedoston voisi poistaa käytöstä ja toteuttaa niin, että globaalilla Expensetracker-luokalla olisi konfiguraatio esimerkiksi attribuuttina. Näin myös konfiguraation hallintaan liittyvän sovelluslogiikan voisi eriyttää paremmin käyttöliittymästä.
