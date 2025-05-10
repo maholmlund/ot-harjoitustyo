@@ -9,7 +9,7 @@ from config import CONFIG
 
 def init_db_file():
     # a nice shell injection :)
-    os.system(f"cat src/schema.sql | sqlite3 {CONFIG["dbfile"]}")
+    os.system(f"cat src/schema.sql | sqlite3 {CONFIG['dbfile']}")
     con = sqlite3.connect(CONFIG["dbfile"])
     for c in CONFIG["categories"]:
         con.execute("INSERT INTO Categories (name) VALUES (?)", [c])
