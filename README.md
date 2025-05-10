@@ -8,10 +8,12 @@ Sovellus mahdollistaa oman talouden tarkkailun pitämällä kirjaa omista menois
 - [vaatimusmäärittely](dokumentaatio/vaatimusmaarittely.md)
 - [työaikakirjanpito](dokumentaatio/tuntikirjanpito.md)
 - [changelog](dokumentaatio/changelog.md)
+- [käyttöohje](dokumentaatio/kaytto-ohje.md)
+- [testausdokumentti](dokumentaatio/testaus.md)
 
 ## Käyttö
 
-Sovelluksen käyttö vaatii Pythonin version 3.10 tai uudemman sekä Poetryn. Sovelluksen asennus:
+Sovelluksen käyttö vaatii Pythonin version 3.11 ([asennusohje](https://ohjelmistotekniikka-hy.github.io/python/toteutus#python-versioiden-hallinta)) tai uudemman sekä Poetryn ([asennusohje](https://ohjelmistotekniikka-hy.github.io/python/viikko2#asennus)). Sovelluksen asennus:
 
 ```
 $ git clone https://github.com/maholmlund/ot-harjoitustyo
@@ -19,14 +21,13 @@ $ cd ot-harjoitustyo
 $ poetry install
 ```
 
-Tämän jälkeen voidaan alustaa tietokanta (tehtävä ennen sovelluksen käyttöä) ja suorittaa ohjelma:
+Tämän jälkeen voidaan suorittaa ohjelma:
 
 ```
-$ poetry run invoke create-database
 $ poetry run invoke start
 ```
 
-Tietokannan alustus luo ainoastaan tietokannan, käyttäjän on itse luotava oma käyttäjänsä.
+Sovellus tallentaa datan oletuksena tiedostoon database.db. Tätä voi muuttaa konfiguraatiotiedostossa ([ohje](./dokumentaatio/kaytto-ohje.md))
 
 ## Testit
 
@@ -50,7 +51,4 @@ Pylint voidaan suorittaa koodille komennolla
 $ poetry run invoke lint
 ```
 
-## Releaset
-[Viikko 5](https://github.com/maholmlund/ot-harjoitustyo/releases/tag/viikko5)
-
-[Viikko 6](https://github.com/maholmlund/ot-harjoitustyo/releases/tag/viikko6)
+## [Releaset](https://github.com/maholmlund/ot-harjoitustyo/releases/)
