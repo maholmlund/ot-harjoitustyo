@@ -33,3 +33,9 @@
 - Parannattu dokumentaatiota
 - Lisätty testausta
 - Bugikorjauksia
+
+## Viikko 7
+
+- Sovelluksen voi konfiguroidan konfiguraatiotiedoston kautta
+- Lisätty testausta
+- Päivitetty dokumentaatio

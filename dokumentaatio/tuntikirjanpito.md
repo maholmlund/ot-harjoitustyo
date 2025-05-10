@@ -10,5 +10,6 @@
 | 26.4. | 2    | käyttöliittymäparannuksia, bugikorjauksia                              |
 | 28.4. | 4    | summat kategorian mukaan, kulujen poisto                               |
 | 29.4. | 5    | käyttöliittymäparannuksia, päiväkohtainen keskiarvo, dokumentaatio     |
+| 11.5. | 9    | konfiguraatiotiedosto, testaus, dokumentaation päivitys                |
 
-yht. 28 h
+yht. 37 h
