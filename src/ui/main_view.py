@@ -7,13 +7,25 @@ from config import CONFIG
 
 
 class MainView:
+    """Ohjelman etusivusta vastaava luokka.
+
+    Attributes:
+        stats_window: Auki olevan statistiikkanäkymän sisältävä ikkuna
+    """
+
     def __init__(self, root, handle_logout):
-        self.root = root
-        self.handle_logout = handle_logout
-        self.error_msg = None
+        """Luo uuden etusivun ohjelmalle.
+
+        Args:
+            root: Uuden framen juuri
+            handle_logout: Funktio, jota kutsutaan kun käyttäjä painaa Log out -painiketta
+        """
         self.stats_window = None
-        self.stats_view = None
-        self._frame = ttk.Frame(self.root)
+        self._root = root
+        self._handle_logout = handle_logout
+        self._error_msg = None
+        self._stats_view = None
+        self._frame = ttk.Frame(self._root)
         self._initialize()
 
     def _initialize(self):
@@ -25,8 +37,8 @@ class MainView:
         self.category_var = StringVar(self._frame)
         self.date_var = StringVar(self._frame)
 
-        if self.error_msg:
-            error_msg = ttk.Label(self._frame, text=self.error_msg, foreground="red")
+        if self._error_msg:
+            error_msg = ttk.Label(self._frame, text=self._error_msg, foreground="red")
             error_msg.grid(row=6, column=6, columnspan=2, padx=6, pady=4)
 
         stats_button = ttk.Button(self._frame, text="Monthly stats",
@@ -56,38 +68,38 @@ class MainView:
 
     def _reload_window(self):
         self._frame.destroy()
-        self._frame = ttk.Frame(self.root)
+        self._frame = ttk.Frame(self._root)
         self._initialize()
 
     def _reload_expenses(self):
         self._reload_window()
-        if self.stats_view is not None:
-            self.stats_view.reload_window()
+        if self._stats_view is not None:
+            self._stats_view.reload_window()
 
     def _create_expense(self):
-        self.error_msg = None
+        self._error_msg = None
         sum_value = self.sum_var.get()
         desc = self.desc_var.get()
         category = self.category_var.get()
         date = self.date_var.get()
         if not expensetracker.create_expense(sum_value, desc, category, date):
-            self.error_msg = "invalid number format"
+            self._error_msg = "invalid number format"
         self._reload_expenses()
 
     def _logout(self):
         expensetracker.logout()
         self._frame.destroy()
-        self.handle_logout(self.root, MainView)
+        self._handle_logout(self._root, MainView)
 
     def _show_monthly_view(self):
         if self.stats_window is not None:
             self._on_stats_close()
         else:
-            self.stats_window = Toplevel(self.root)
+            self.stats_window = Toplevel(self._root)
             self.stats_window.protocol("WM_DELETE_WINDOW", self._on_stats_close)
-            self.stats_view = StatsView(self.stats_window, self._reload_expenses)
+            self._stats_view = StatsView(self.stats_window, self._reload_expenses)
 
     def _on_stats_close(self):
         self.stats_window.destroy()
         self.stats_window = None
-        self.stats_view = None
+        self._stats_view = None

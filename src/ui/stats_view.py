@@ -7,7 +7,17 @@ from ui.helpers import build_expense_table
 
 
 class StatsView:
+    """Kuukausittaisen statistiikan näyttämisestä vastaava luokka."""
+
     def __init__(self, root, reload_all_windows):
+        """Konstruktori, joka luo uuden statistiikkanäkymän.
+
+        Args:
+            root: Uuden framen juuri
+            reload_all_windows: Funktio, joka kutsuttaessa lataa uudelleen kaikki
+                                ikkunat (tarvitaan, jos käyttäjä poistaa menon 
+                                statistiikkanäkymästä)
+        """
         self._root = root
         self._reload_all_windows = reload_all_windows
         self._frame = ttk.Frame(self._root)
@@ -56,6 +66,7 @@ class StatsView:
             sum_label.grid(row=start_row + row, column=start_col + 1, padx=6, pady=4)
 
     def reload_window(self):
+        """Lataa uudelleen statistiikkaikkunan."""
         self._reload_expenses()
         self._frame.destroy()
         self._frame = ttk.Frame(self._root)

@@ -4,7 +4,15 @@ from ui.main_view import MainView
 
 
 class LoginView:
+    """Kirjautumisikkunasta vastaava luokka."""
+
     def __init__(self, root, handle_login):
+        """Luo uuden kirjautumisikkunan.
+
+        Args:
+            root: Uuden framen juuri
+            handle_login: Funktio, joka kutsutaan onnistuneen kirjautumisen jälkeen
+        """
         self._root = root
         self._frame = ttk.Frame(self._root)
         self._error_msg = StringVar(self._frame)
@@ -25,7 +33,8 @@ class LoginView:
         username_label = ttk.Label(self._frame, text="Username:")
         passwd_label = ttk.Label(self._frame, text="Password:")
         login_button = ttk.Button(self._frame, text="Login", command=self._handle_login_submit)
-        create_user_button = ttk.Button(self._frame, text="Create user", command=self._handle_user_creation)
+        create_user_button = ttk.Button(self._frame, text="Create user",
+                                        command=self._handle_user_creation)
 
         self._username_field.grid(row=1, column=1, padx=6, pady=4)
         self._passwd_field.grid(row=2, column=1, padx=6, pady=4)
