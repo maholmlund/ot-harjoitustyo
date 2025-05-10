@@ -1,4 +1,39 @@
 # Käyttöohje
+
+## Ohjelman asennus
+
+Ennen asentamista varmista, että:
+- Käytössä on Linux-kone
+- Poetry on asennettuna
+- Pythonin versio on vähintään 3.11.0
+
+Ohjelman koodin voi hakea joko [GitHubin release-osiosta](https://github.com/maholmlund/ot-harjoitustyo/releases) tai suorittamalla komento
+`$ git clone https://github.com/maholmlund/ot-harjoitustyo`
+
+Tämän jälkeen ohjelman riippuvuudet voi asentaa suorittamalla komento `$ poetry install`.
+
+Ohjelma käynnistetään suorittamalla komento `$ poetry run invoke start`.
+
+## Konfigurointi
+
+Ohjelman voi konfiguroida trackerconf.toml-tiedostossa. Tiedosto käyttää [toml-formaattia](https://toml.io). Tiedostossa voidaan määrittää ohjelman käyttämän tietokantatiedoston nimi, käytetty valuutta ja käytössä olevat menokategoriat. Tiedosto on oltava samassa kansiossa kuin mistä ohjelma suoritetaan. Mikäli tiedostoa ei ole tai siinä on syntaksivirheitä, käytetään oletusarvoista konfiguraatiota.
+
+Esimerkkikonfiguraatio (nämä ovat myös edellä mainitut oletusarvot):
+```toml
+# tietokantatiedoston nimi, merkkijonona
+dbfile="database.db"
+
+# käytössä oleva valuutta, merkkijonona
+currency="€"
+
+# kategoriat, listana merkkijonoja
+categories=["ruoka", "liikenne", "liikunta", "kulttuuri", "sijoitukset"]
+```
+
+**HUOM!**
+
+Mikäli käyttössä olevia kategorioita muutetaan konfiguraatiotiedostossa, päivittää ohjelma nämä käytössä olevaan tietokantaan seuraavalla käynnistyskerralla. Jos jokin tietokannassa aiemmin ollut kategoria puuttuu uudesta konfiguraatiosta, poistetaan se tietokannasta ja sen mukana kaikki tähän kategoriaan linkitetyt menot.
+
 ## Kirjautuminen ja tunnuksen luonti
 
 ![](./kuvat/kirjautuminen.png)
