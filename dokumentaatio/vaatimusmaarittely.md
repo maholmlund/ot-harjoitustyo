@@ -4,7 +4,8 @@
 
 Sovellus mahdollistaa käyttäjille oman rahan käytön seuraamisen. Seuraaminen
 tapahtuu listaamalla omia menoja sovellukseen. Sovellusta on mahdollista
-käyttää useammalla käyttäjällä joilla kaikilla on omat kululistansa.
+käyttää useammalla käyttäjällä joilla kaikilla on omat kululistansa. Käyttäjät
+näkevät sovelluksessa statistiikkaa listaamistaan menoista.
 
 ## Käyttäjät
 
@@ -14,30 +15,31 @@ Sovelluksessa on yhtä käyttäjätyyppiä, ns. normaalikäyttäjä.
 
 ### Ennen kirjautumista
 
-- Käyttäjä voi luoda uuden tunnuksen (tehty)
-  - Tunnuksen täytyy olla vähintään 4 merkkiä (tehty)
-  - Salasanan täytyy olla vähintään 4 merkkiä (tehty)
-- Käyttäjä voi kirjautua sovellukseen syöttämällä käyttäjänimen ja salasana (tehty)
+- Käyttäjä voi luoda uuden tunnuksen
+  - Tunnuksen täytyy olla vähintään 4 merkkiä
+  - Salasanan täytyy olla vähintään 4 merkkiä
+- Käyttäjä voi kirjautua sovellukseen syöttämällä käyttäjänimen ja salasana
 
 ### Kirjautumisen jälkeen
 
-- Käyttäjä voi lisätä uuden menon (tehty)
-  - Menolle voi määritellä summan (tehty)
-  - Menolle voi valita kategorian valmiista kategorioista (tehty)
-  - Menolle voi asettaa päivämäärän (tehty)
-- Käyttäjä näkee omat aiemmin kirjatut menonsa (tehty)
-- Käyttäjä näkee statistiikkaa omista menoista, mm. (tehty)
-  - Kategorian perusteella (tehty)
-  - Kuukauden menojen keskiarvo (tehty)
+- Käyttäjä voi lisätä uuden menon
+  - Menolle voi määritellä summan
+  - Menolle voi valita kategorian valmiista kategorioista
+  - Menolle voi asettaa päivämäärän
+  - Menolle voi kirjoittaa vapaamuotoisen kuvauksen
+- Käyttäjä voi poistaa menon
+- Käyttäjä näkee omat aiemmin kirjatut menonsa
+- Käyttäjä näkee statistiikkaa omista menoista kuukausittain
+  - Kokonaissumman kategorioittain
+  - Kuukauden menojen päivittäinen keskiarvo
+  - Kuukauden menojen kokonaissumma
 
 ### Käyttöliittymäluonnos
 
-Sovelluksessa on kaksi näkymää: kirjautumisikkuna ja varsinainen näkymä. Uusien käyttäjien luonti tapahtuu samassa kirjautumisikkunassa kuin kirjautuminen.
-![luonnos](kayttoliittymaluonnos.jpg)
+Sovelluksessa on kolme näkymää: kirjautumisikkuna ja varsinainen näkymä sekä erillinen statistiikkaikkuna. Uusien käyttäjien luonti tapahtuu samassa kirjautumisikkunassa kuin kirjautuminen. Statistiikkaikkunan saa auki päänäkymästä erillisellä painikkeella.
+![luonnos](kayttoliittymaluonnos.png)
 
 ## Laajennusideat
 
-- Käyttäjä voi itse lisätä uusia menokategorioita
 - Käyttäjä voi muokata aiempia menoja
-- Käyttäjä voi poistaa menoja (tehty)
-- Käyttäjä voi valita missä valuutassa meno on listattu
+- Käyttäjä voi määrittää itselleen lisää kategorioita vaikuttamatta muihin käyttäjiin
