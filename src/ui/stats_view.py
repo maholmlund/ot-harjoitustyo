@@ -25,9 +25,9 @@ class StatsView:
         get_expenses_button = ttk.Button(
             self._frame, text="Get expenses", command=self.reload_window)
         total_label = ttk.Label(
-            self._frame, text=f"Total this month: {self._month_data.total_sum}{CONFIG["currency"]}")
+            self._frame, text=f"Total this month: {self._month_data.total_sum}{CONFIG['currency']}")
         average_label = ttk.Label(
-            self._frame, text=f"Daily average: {self._month_data.daily_average}{CONFIG["currency"]}/day")
+            self._frame, text=f"Daily average: {self._month_data.daily_average}{CONFIG['currency']}/day")
         date_label = ttk.Label(
             self._frame, text=f"Expenses for {self._month_var.get()}/{self._year_var.get()}")
         category_label = ttk.Label(self._frame, text="Total sum by category:")
@@ -51,7 +51,7 @@ class StatsView:
         for row, category in enumerate(CONFIG["categories"]):
             category_label = ttk.Label(self._frame, text=category)
             sum_label = ttk.Label(
-                self._frame, text=f"{self._month_data.sums_by_category[category]}{CONFIG["currency"]}")
+                self._frame, text=f"{self._month_data.sums_by_category[category]}{CONFIG['currency']}")
             category_label.grid(row=start_row + row, column=start_col, padx=6, pady=4)
             sum_label.grid(row=start_row + row, column=start_col + 1, padx=6, pady=4)
 
