@@ -15,12 +15,15 @@ def load_config():
         print("Error reading config file: could not open file")
         print("Using default configuration")
     default_values = {
-        "currency": "€",
-        "dbfile": "database.db",
-        "categories": ["ruoka", "liikenne", "liikunta", "kulttuuri", "sijoitukset"]
+        "currency": ("€", str),
+        "dbfile": ("database.db", str),
+        "categories": (["ruoka", "liikenne", "liikunta", "kulttuuri", "sijoitukset"], list)
     }
-    for key, value in default_values.items():
+    for key, (value, target_type) in default_values.items():
         if key not in data:
+            data[key] = value
+        elif not isinstance(data[key], target_type):
+            print(f"invalid type for {key}, using default option")
             data[key] = value
     return data
 
