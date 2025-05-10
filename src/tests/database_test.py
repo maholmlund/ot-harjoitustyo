@@ -9,8 +9,9 @@ from config import CONFIG
 class TestDataBase(unittest.TestCase):
     def setUp(self):
         CONFIG["dbfile"] = ".testdb.db"
+        CONFIG["categories"] = ["ruoka"]
+        os.remove(".testdb.db")
         self.db = Db()
-        self.db.delete_all()
         self.db.create_user("testi", "salasana")
 
     def test_create_user(self):
