@@ -10,7 +10,10 @@ class TestDataBase(unittest.TestCase):
     def setUp(self):
         CONFIG["dbfile"] = ".testdb.db"
         CONFIG["categories"] = ["ruoka"]
-        os.remove(".testdb.db")
+        try:
+            os.remove(".testdb.db")
+        except FileNotFoundError:
+            pass
         self.db = Db()
         self.db.create_user("testi", "salasana")
 
