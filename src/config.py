@@ -3,6 +3,13 @@ import os
 
 
 def load_config():
+    """Funktio, joka lataa sovelluksen konfiguraation tiedostosta trackerconf.toml.
+
+    Mikäli latauksessa on jokin virhe (esim. tiedosto puuttuu), käytetään oletusarvoja.
+
+    Returns:
+        Sanakirjan, joka sisältää sovelluksen asetukset
+    """
     data = {}
     if os.path.isfile("trackerconf.toml") and os.access("trackerconf.toml", os.R_OK):
         with open("trackerconf.toml", "rb") as f:
