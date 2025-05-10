@@ -32,6 +32,14 @@ class DummyDB:
         date_start = f"{year}-{month}"
         return list(filter(lambda e: e.date.startswith(date_start), self.expenses))
 
+    def delete_expense(self, expense_id):
+        target_index = 0
+        for i, e in enumerate(self.expenses):
+            if e.id == expense_id:
+                target_index = i
+                break
+        del self.expenses[i]
+
 
 class TestExpenseTracker(unittest.TestCase):
     def setUp(self):
@@ -111,3 +119,8 @@ class TestExpenseTracker(unittest.TestCase):
         self.create_expenses()
         month_data = self.e.get_month_data("999999", "1")
         self.assertIsNone(month_data)
+
+    def test_delete_expense(self):
+        self.create_expenses()
+        self.e.delete_expense(1)
+        self.assertEqual(len(self.e.get_expenses()), 3)
