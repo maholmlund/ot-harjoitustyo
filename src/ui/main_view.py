@@ -1,8 +1,9 @@
 from tkinter import ttk, StringVar, Toplevel
-from expensetracker import expensetracker, CATEGORIES
+from expensetracker import expensetracker
 from tkcalendar import DateEntry
 from ui.stats_view import StatsView
 from ui.helpers import build_expense_table
+from config import CONFIG
 
 
 class MainView:
@@ -41,7 +42,7 @@ class MainView:
         desc_label = ttk.Label(self._frame, text="Description")
         sum_field = ttk.Entry(self._frame, textvariable=self.sum_var)
         desc_field = ttk.Entry(self._frame, textvariable=self.desc_var)
-        category_field = ttk.OptionMenu(self._frame, self.category_var, *CATEGORIES)
+        category_field = ttk.OptionMenu(self._frame, self.category_var, *CONFIG["categories"])
         date_field = DateEntry(self._frame, textvariable=self.date_var, date_pattern="yyyy-mm-dd")
         create_button = ttk.Button(self._frame, text="Create", command=self._create_expense)
 

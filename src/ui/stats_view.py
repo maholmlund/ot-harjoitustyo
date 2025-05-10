@@ -1,5 +1,5 @@
 from tkinter import ttk, StringVar
-from expensetracker import expensetracker, CATEGORIES
+from expensetracker import expensetracker
 from datetime import datetime
 
 from config import CONFIG
@@ -48,7 +48,7 @@ class StatsView:
         self._frame.pack()
 
     def _build_category_sum_list(self, start_row, start_col):
-        for row, category in enumerate(CATEGORIES):
+        for row, category in enumerate(CONFIG["categories"]):
             category_label = ttk.Label(self._frame, text=category)
             sum_label = ttk.Label(
                 self._frame, text=f"{self._month_data.sums_by_category[category]}{CONFIG["currency"]}")

@@ -2,12 +2,7 @@ from datetime import date
 
 from database import Db
 from expense import sum_expenses
-
-CATEGORIES = ["ruoka",
-              "liikenne",
-              "liikunta",
-              "kulttuuri",
-              "sijoitukset"]
+from config import CONFIG
 
 
 class MonthData:
@@ -176,9 +171,9 @@ class Expensetracker:
         def filter_by_category(expenses, category):
             return list(filter(lambda e: e.category == category, expenses))
         expenses_by_category = {category: filter_by_category(
-            expenses, category) for category in CATEGORIES}
+            expenses, category) for category in CONFIG["categories"]}
         sums_by_category = {category: sum_expenses(
-            expenses_by_category[category]) for category in CATEGORIES}
+            expenses_by_category[category]) for category in CONFIG["categories"]}
         daily_average = self._calculate_daily_average(int(year), int(month), total_sum)
         return MonthData(expenses, total_sum, sums_by_category, daily_average)
 
